@@ -6,6 +6,8 @@ const darkTheme: IThemeConfig = {
     background: "rgb(39, 49, 56)",
     main: "rgb(199, 199, 199)",
     secondary: "rgb(136, 136, 136)",
+    action: "#EEEEF2",
+    header: "rgb(199, 199, 199)",
     border: "rgba(195, 195, 195, 0.14)",
     hover: "rgb(16, 26, 32)"
   }

@@ -1,9 +1,9 @@
 const ConnectToBinanceChainWallet = async () => {
   let provider = null;
-  if (typeof window.BinanceChain !== 'undefined') {
+  if (typeof window.BinanceChain !== "undefined") {
     provider = window.BinanceChain;
     try {
-      await provider.request({ method: 'eth_requestAccounts' })
+      await provider.request({ method: "eth_requestAccounts" });
     } catch (error) {
       throw new Error("User Rejected");
     }

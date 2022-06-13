@@ -83,6 +83,8 @@ export type ThemeColors = {
   background: string;
   main: string;
   secondary: string;
+  header: string;
+  action: string;
   border: string;
   hover: string;
 };

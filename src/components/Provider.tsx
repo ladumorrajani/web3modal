@@ -1,5 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
+// @ts-ignore
+import chevronRight from "../assets/chevron-right.svg";
 
 import { ThemeColors } from "../helpers";
 import {
@@ -7,12 +9,14 @@ import {
   PROVIDER_CONTAINER_CLASSNAME,
   PROVIDER_ICON_CLASSNAME,
   PROVIDER_NAME_CLASSNAME,
-  PROVIDER_DESCRIPTION_CLASSNAME
+  PROVIDER_DESCRIPTION_CLASSNAME,
+  PROVIDER_CONTENT_CLASSNAME,
+  PROVIDER_ARROW_CLASSNAME
 } from "../constants";
 
 const SIcon = styled.div`
-  width: 45px;
-  height: 45px;
+  width: 48px;
+  height: 48px;
   display: flex;
   border-radius: 50%;
   overflow: visible;
@@ -22,11 +26,8 @@ const SIcon = styled.div`
   & img {
     width: 100%;
     height: 100%;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 8.5vw;
-    height: 8.5vw;
+    border-radius: 50%;
+    object-fit: contain;
   }
 `;
 
@@ -35,56 +36,62 @@ interface IStyedThemeColorOptions {
 }
 
 const SName = styled.div<IStyedThemeColorOptions>`
-  width: 100%;
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: 0.5em;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
   color: ${({ themeColors }) => themeColors.main};
-  @media screen and (max-width: 768px) {
-    font-size: 5vw;
-  }
 `;
 
 const SDescription = styled.div<IStyedThemeColorOptions>`
-  width: 100%;
-  font-size: 18px;
-  margin: 0.333em 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
   color: ${({ themeColors }) => themeColors.secondary};
-  @media screen and (max-width: 768px) {
-    font-size: 4vw;
-  }
 `;
 
-const SProviderContainer = styled.div<IStyedThemeColorOptions>`
+const SProviderContainer = styled.div`
   transition: background-color 0.2s ease-in-out;
   width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  gap: 12px;
+  justify-content: flex-start;
   align-items: center;
-  background-color: ${({ themeColors }) => themeColors.background};
   border-radius: 12px;
-  padding: 24px 16px;
-  @media screen and (max-width: 768px) {
-    padding: 1vw;
-  }
 `;
-
-const SProviderWrapper = styled.div<IStyedThemeColorOptions>`
+interface IProviderWrapperStyleProps {
+  themeColors: ThemeColors;
+  isFirst: boolean;
+  isLast: boolean;
+}
+const SProviderWrapper = styled.div<IProviderWrapperStyleProps>`
   width: 100%;
-  padding: 8px;
+  padding: 16px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
   cursor: pointer;
-  border-radius: 0;
-  border: ${({ themeColors }) => `1px solid ${themeColors.border}`};
+  border-radius: ${({ isFirst, isLast }) =>
+    isFirst ? "8px 8px 0 0" : isLast ? "0 0 8px 8px" : 0};
+  border-bottom: ${({ themeColors, isLast }) =>
+    isLast ? "none" : `1px solid ${themeColors.border}`};
   @media (hover: hover) {
-    &:hover ${SProviderContainer} {
+    &:hover {
       background-color: ${({ themeColors }) => themeColors.hover};
     }
   }
+`;
+const SProviderArrow = styled.img`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const SProviderContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
 `;
 
 interface IProviderProps {
@@ -92,6 +99,8 @@ interface IProviderProps {
   logo: string;
   description: string;
   themeColors: ThemeColors;
+  isFirst: boolean;
+  isLast: boolean;
   onClick: () => void;
 }
 
@@ -102,6 +111,8 @@ export function Provider(props: IProviderProps) {
     description,
     themeColors,
     onClick,
+    isFirst,
+    isLast,
     ...otherProps
   } = props;
   return (
@@ -109,25 +120,27 @@ export function Provider(props: IProviderProps) {
       themeColors={themeColors}
       className={PROVIDER_WRAPPER_CLASSNAME}
       onClick={onClick}
+      isFirst={isFirst}
+      isLast={isLast}
       {...otherProps}
     >
-      <SProviderContainer
-        themeColors={themeColors}
-        className={PROVIDER_CONTAINER_CLASSNAME}
-      >
+      <SProviderContainer className={PROVIDER_CONTAINER_CLASSNAME}>
         <SIcon className={PROVIDER_ICON_CLASSNAME}>
           <img src={logo} alt={name} />
         </SIcon>
-        <SName themeColors={themeColors} className={PROVIDER_NAME_CLASSNAME}>
-          {name}
-        </SName>
-        <SDescription
-          themeColors={themeColors}
-          className={PROVIDER_DESCRIPTION_CLASSNAME}
-        >
-          {description}
-        </SDescription>
+        <SProviderContent className={PROVIDER_CONTENT_CLASSNAME}>
+          <SName themeColors={themeColors} className={PROVIDER_NAME_CLASSNAME}>
+            {name}
+          </SName>
+          <SDescription
+            themeColors={themeColors}
+            className={PROVIDER_DESCRIPTION_CLASSNAME}
+          >
+            {description}
+          </SDescription>
+        </SProviderContent>
       </SProviderContainer>
+      <SProviderArrow src={chevronRight} className={PROVIDER_ARROW_CLASSNAME} />
     </SProviderWrapper>
   );
 }

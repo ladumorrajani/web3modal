@@ -10,6 +10,12 @@ import WalletConnect from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 // @ts-ignore
 import Torus from "@toruslabs/torus-embed";
+// @ts-ignore
+import MetamaskLogo from "./assets/metamask.png";
+// @ts-ignore
+import CoinbaseLogo from "./assets/coinbase.png";
+// @ts-ignore
+import WalletConnectLogo from "./assets/walletconnect.png";
 
 import Button from "./components/Button";
 import Column from "./components/Column";
@@ -167,6 +173,7 @@ class App extends React.Component<any, any> {
       network: this.getNetwork(),
       cacheProvider: true,
       providerOptions: this.getProviderOptions()
+      // disableInjectedProvider: true
     });
   }
 
@@ -233,15 +240,19 @@ class App extends React.Component<any, any> {
     const infuraId = process.env.REACT_APP_INFURA_ID;
     const providerOptions = {
       walletconnect: {
+        display: {
+          description: "Connect using mobile wallet"
+        },
         package: WalletConnect,
         options: {
           infuraId
         }
       },
-      torus: {
-        package: Torus
-      },
       coinbasewallet: {
+        display: {
+          logo: CoinbaseLogo,
+          description: "Connect using Coinbase wallet"
+        },
         package: CoinbaseWalletSDK,
         options: {
           appName: "Web3Modal Example App",

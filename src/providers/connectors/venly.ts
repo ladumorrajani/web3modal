@@ -12,7 +12,7 @@ const ConnectToVenly = (Venly: any, opts: IVenlyConnectorOptions) => {
       try {
         const options = {
           clientId: opts.clientId,
-          secretType: opts.secretType || 'ETHEREUM',
+          secretType: opts.secretType || "ETHEREUM",
           environment: opts.environment,
           signMethod: "POPUP"
         };
